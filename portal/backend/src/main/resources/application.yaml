@@ -4,9 +4,9 @@ server:
 
 spring:
   application:
-    name: demo
+    name: devops
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:devops
     driver-class-name: org.h2.Driver
     username: sa
     password:
