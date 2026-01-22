@@ -6,7 +6,7 @@ spring:
   application:
     name: devops
   datasource:
-    url: jdbc:h2:mem:devops
+    url: jdbc:h2:file:./data/devops
     driver-class-name: org.h2.Driver
     username: sa
     password:
