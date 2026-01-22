@@ -24,14 +24,24 @@ src/main/java/io/hjmoons/devops/
 ├── config/
 │   ├── SecurityConfig.java      # Spring Security 설정 (현재 개발용 전체 허용)
 │   └── SwaggerConfig.java       # OpenAPI 설정
-└── project/
-    ├── Project.java             # 프로젝트 엔티티
-    ├── ProjectController.java   # REST API 컨트롤러
-    ├── ProjectRepository.java   # JPA Repository
-    ├── ProjectService.java      # 비즈니스 로직
+├── project/
+│   ├── Project.java             # 프로젝트 엔티티
+│   ├── ProjectController.java   # REST API 컨트롤러
+│   ├── ProjectRepository.java   # JPA Repository
+│   ├── ProjectService.java      # 비즈니스 로직
+│   └── dto/
+│       ├── ProjectRequest.java  # 요청 DTO
+│       └── ProjectResponse.java # 응답 DTO
+└── jenkins/
+    ├── JenkinsFolder.java           # Jenkins 폴더-프로젝트 매핑 엔티티
+    ├── JenkinsFolderRepository.java # JPA Repository
+    ├── JenkinsProperties.java       # Jenkins 연결 설정 (@ConfigurationProperties)
+    ├── JenkinsClient.java           # Jenkins API 호출 클라이언트
+    ├── JenkinsService.java          # 비즈니스 로직
+    ├── JenkinsController.java       # REST API 컨트롤러
     └── dto/
-        ├── ProjectRequest.java  # 요청 DTO
-        └── ProjectResponse.java # 응답 DTO
+        ├── JenkinsFolderRequest.java  # 요청 DTO
+        └── JenkinsFolderResponse.java # 응답 DTO
 ```
 
 ## API 엔드포인트
@@ -44,6 +54,11 @@ Base Path: `/api`
 - `GET /projects/{id}` - 프로젝트 조회
 - `PUT /projects/{id}` - 프로젝트 수정
 - `DELETE /projects/{id}` - 프로젝트 삭제
+
+### Jenkins API (`/api/jenkins`)
+- `POST /jenkins/folders` - Jenkins 폴더 생성 (프로젝트와 매핑)
+- `GET /jenkins/folders` - 전체 Jenkins 폴더 조회
+- `GET /jenkins/folders/project/{projectId}` - 프로젝트별 Jenkins 폴더 조회
 
 ### 개발 도구
 - Swagger UI: `/api/swagger-ui/index.html`
@@ -62,9 +77,14 @@ gradle build
 gradle test
 ```
 
-## 향후 연동 예정
+## 외부 연동
 
-- **Jenkins API**: CI/CD 파이프라인 관리
+### Jenkins (구현됨)
+- URL: `http://localhost:8080` (로컬 개발용)
+- 인증: Basic Auth (username + API token)
+- 기능: 폴더 생성
+
+### 향후 연동 예정
 - **GitHub API**: 저장소 연동, 웹훅
 - **Keycloak**: OAuth2 인증/인가
 
@@ -78,5 +98,6 @@ gradle test
 ## 현재 상태
 
 - 기본 프로젝트 CRUD API 구현 완료
+- Jenkins 폴더 생성 API 연동 완료
 - Security 설정은 개발용으로 전체 허용 상태
 - Keycloak OAuth2 연동 준비됨 (의존성 추가됨, 설정 미완료)

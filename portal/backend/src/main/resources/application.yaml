@@ -1,4 +1,5 @@
 server:
+  port: 8090
   servlet:
     context-path: /api
 
@@ -19,3 +20,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+jenkins:
+  url: http://localhost:8080
+  username: admin
+  token: 11e7cf2c5bda806c6f0260162ad60588b7
