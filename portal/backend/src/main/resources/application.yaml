@@ -11,7 +11,6 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-    # H2 콘솔 활성화
   h2:
     console:
       enabled: true
@@ -20,6 +19,28 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: portal
+            client-secret: d9uu9FnYmyoFja8vsGM1mMED8T6KBvfx
+            scope: openid, profile, email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/realms/devops
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/devops
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: portal
+      use-pkce-with-authorization-code-grant: true
 
 jenkins:
   url: http://localhost:8080
