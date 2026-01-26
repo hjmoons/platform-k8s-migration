@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface JenkinsFolderRepository extends JpaRepository<JenkinsFolder, Long> {
+public interface JenkinsRepository extends JpaRepository<JenkinsFolder, Long> {
 
     Optional<JenkinsFolder> findByProjectId(Long projectId);
 
