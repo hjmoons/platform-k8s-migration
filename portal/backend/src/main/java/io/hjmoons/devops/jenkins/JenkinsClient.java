@@ -1,6 +1,7 @@
 package io.hjmoons.devops.jenkins;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -12,19 +13,18 @@ import java.util.Base64;
 public class JenkinsClient {
 
     private final RestClient restClient;
-    private final JenkinsProperties properties;
 
-    public JenkinsClient(JenkinsProperties properties) {
-        this.properties = properties;
+    public JenkinsClient(
+            @Value("${jenkins.url}") String url,
+            @Value("${jenkins.username}") String username,
+            @Value("${jenkins.token}") String token) {
+        String credentials = username + ":" + token;
+        String basicAuth = "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
+
         this.restClient = RestClient.builder()
-                .baseUrl(properties.getUrl())
-                .defaultHeader("Authorization", createBasicAuth())
+                .baseUrl(url)
+                .defaultHeader("Authorization", basicAuth)
                 .build();
-    }
-
-    private String createBasicAuth() {
-        String credentials = properties.getUsername() + ":" + properties.getToken();
-        return "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
     }
 
     public void createFolder(String folderName) {

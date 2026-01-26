@@ -3,6 +3,7 @@ package io.hjmoons.devops.github;
 import io.hjmoons.devops.github.dto.GitHubRepoCreateRequest;
 import io.hjmoons.devops.github.dto.GitHubRepoInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -13,10 +14,12 @@ public class GitHubClient {
 
     private final RestClient restClient;
 
-    public GitHubClient(GitHubProperties properties) {
+    public GitHubClient(
+            @Value("${github.url}") String url,
+            @Value("${github.token}") String token) {
         this.restClient = RestClient.builder()
-                .baseUrl(properties.getUrl())
-                .defaultHeader("Authorization", "Bearer " + properties.getToken())
+                .baseUrl(url)
+                .defaultHeader("Authorization", "Bearer " + token)
                 .defaultHeader("Accept", "application/vnd.github+json")
                 .defaultHeader("X-GitHub-Api-Version", "2022-11-28")
                 .build();

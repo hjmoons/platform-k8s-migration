@@ -24,28 +24,28 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: portal
-            client-secret: ZDK3y4gU1kkGOvKV6yYm1iSVMLaGlrDy
+            client-id: ${KEYCLOAK_CLIENT_ID:portal}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:your-keycloak-client-secret}
             scope: openid, profile, email
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
         provider:
           keycloak:
-            issuer-uri: http://localhost:8180/realms/devops
+            issuer-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8180/realms/devops
+          issuer-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}
 
 springdoc:
   swagger-ui:
     oauth:
-      client-id: portal
+      client-id: ${KEYCLOAK_CLIENT_ID:portal}
       use-pkce-with-authorization-code-grant: true
 
 jenkins:
-  url: http://localhost:8080
-  username: admin
-  token: 11e7cf2c5bda806c6f0260162ad60588b7
+  url: ${JENKINS_URL:http://localhost:8080}
+  username: ${JENKINS_USERNAME:admin}
+  token: ${JENKINS_TOKEN:your-jenkins-api-token}
 
 github:
   url: https://api.github.com
