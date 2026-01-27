@@ -1,16 +1,15 @@
-import React from 'react';
 import Card from '../components/common/Card';
 
 const DashboardPage = () => {
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">대시보드</h1>
-        <p className="text-gray-600 mt-2">DevOps 플랫폼에 오신 것을 환영합니다</p>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">대시보드</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-2">DevOps 플랫폼에 오신 것을 환영합니다</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
         <Card>
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
@@ -85,25 +84,25 @@ const DashboardPage = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <Card>
-          <h2 className="text-xl font-bold text-gray-800 mb-4">빠른 시작</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">빠른 시작</h2>
           <div className="space-y-3">
             <button className="w-full text-left px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
-              <p className="font-medium text-blue-900">새 프로젝트 생성</p>
-              <p className="text-sm text-blue-700">Jenkins 파이프라인과 연동된 프로젝트를 생성합니다</p>
+              <p className="text-sm sm:text-base font-medium text-blue-900">새 프로젝트 생성</p>
+              <p className="text-xs sm:text-sm text-blue-700">Jenkins 파이프라인과 연동된 프로젝트를 생성합니다</p>
             </button>
             <button className="w-full text-left px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
-              <p className="font-medium text-green-900">GitHub 연동</p>
-              <p className="text-sm text-green-700">GitHub 저장소를 연결합니다</p>
+              <p className="text-sm sm:text-base font-medium text-green-900">GitHub 연동</p>
+              <p className="text-xs sm:text-sm text-green-700">GitHub 저장소를 연결합니다</p>
             </button>
           </div>
         </Card>
 
         <Card>
-          <h2 className="text-xl font-bold text-gray-800 mb-4">최근 활동</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">최근 활동</h2>
           <div className="text-center py-8 text-gray-500">
-            <p>최근 활동이 없습니다</p>
+            <p className="text-sm sm:text-base">최근 활동이 없습니다</p>
           </div>
         </Card>
       </div>
