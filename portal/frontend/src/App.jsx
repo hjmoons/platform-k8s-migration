@@ -1,103 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import axios from './axios';
-import TodoList from './components/TodoList';
-import AddTodo from './components/AddTodo';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import OAuthCallbackPage from './pages/OAuthCallbackPage';
+import Header from './components/layout/Header';
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [todos, setTodos] = useState([]);
+// 인증이 필요한 라우트를 보호하는 컴포넌트
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if(token){
-      setIsLoggedIn(true);
-      fetchTodos();
-    }
-  }, []);
-
-  const fetchTodos = async () => {
-    try {
-      const response = await axios.get('/todos', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        },
-      });
-      setTodos(response.data);
-    } catch (error) {
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-        localStorage.removeItem('jwt');  // 토큰 제거
-        setIsLoggedIn(false);           // 로그인 상태 해제 → 로그인 화면으로 리디렉션됨
-      } else {
-        console.error('할 일 가져오기 실패:', error);
-      }
-    }
-  };
-
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    fetchTodos();
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    setIsLoggedIn(false);
-    setTodos([]); // 데이터 초기화
-  };
-
-  const handleAdd = (newTodo) => {
-    setTodos((prev) => [...prev, newTodo]);
-  };
-
-  const handleToggle = (updatedTodo) => {
-    setTodos((prev) =>
-      prev.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
-    );
-  };
-
-  const handleDelete = (id) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
-  };
-
-  const handleUpdate = (updatedTodo) => {
-    setTodos((prev) =>
-      prev.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
     );
   }
 
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
+
+// 로그인된 사용자는 접근할 수 없는 라우트 (로그인 페이지 등)
+const PublicRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
+};
+
+// 레이아웃 컴포넌트
+const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      {isLoggedIn ? (
-        <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-blue-600">📝 TODO DEMO</h2>
-            <button
-              onClick={handleLogout}
-              className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-            >
-              🚪 로그아웃
-            </button>
-          </div>
-          <AddTodo onAdd={handleAdd} />
-          <TodoList
-            todos={todos}
-            onToggle={handleToggle}
-            onDelete={handleDelete}
-            onUpdate={handleUpdate}
-          />
-        </div>
-      ) : isRegistering ? (
-        <RegisterForm onGoToLogin={() => setIsRegistering(false)} />
-      ) : (
-        <LoginForm
-          onLoginSuccess={handleLoginSuccess}
-          onGoToRegister={() => setIsRegistering(true)}
-        />
-      )}
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <main>{children}</main>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          {/* Public Routes */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route path="/callback" element={<OAuthCallbackPage />} />
+
+          {/* Private Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <DashboardPage />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          {/* Default Route */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

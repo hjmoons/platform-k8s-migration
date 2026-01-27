@@ -21,14 +21,14 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Swagger UI 경로 허용
+                        // 인증 없이 접근 가능한 엔드포인트
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/swagger-resources/**"
+                                "/swagger-resources/**",
+                                "/h2-console/**",
+                                "/auth/**"  // 인증 관련 엔드포인트 전체 허용
                         ).permitAll()
-                        // H2 Console 허용
-                        .requestMatchers("/h2-console/**").permitAll()
                         // 나머지는 인증 필요
                         .anyRequest().authenticated()
                 )
@@ -50,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8090", "http://localhost:8180", "http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:8090", "http://localhost:8180", "http://localhost:3000", "http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

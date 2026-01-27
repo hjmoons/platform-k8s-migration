@@ -32,6 +32,10 @@ spring:
         provider:
           keycloak:
             issuer-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}
+            authorization-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}/protocol/openid-connect/auth
+            token-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}/protocol/openid-connect/token
+            user-info-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}/protocol/openid-connect/certs
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}
@@ -50,3 +54,6 @@ jenkins:
 github:
   url: https://api.github.com
   token: ${GITHUB_TOKEN:your-github-personal-access-token}
+
+frontend:
+  redirect-uri: ${FRONTEND_REDIRECT_URI:http://localhost:5173/callback}
