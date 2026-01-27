@@ -1,12 +1,80 @@
-# React + Vite
+# DevOps Platform Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DevOps 플랫폼 데모 버전 프론트엔드
 
-Currently, two official plugins are available:
+## 기술 스택
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19.1.0
+- Vite 6.3.5
+- React Router DOM 7.13.0
+- Tailwind CSS 3.4.17
+- Axios 1.10.0
 
-## Expanding the ESLint configuration
+## 프로젝트 구조
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/
+├── contexts/
+│   └── AuthContext.jsx           # 인증 상태 관리
+├── services/
+│   ├── authService.js            # Keycloak OAuth 인증 API
+│   └── projectService.js         # 프로젝트 API
+├── components/
+│   ├── auth/
+│   │   └── OAuthLoginButton.jsx  # OAuth 로그인 버튼
+│   ├── layout/
+│   │   └── Header.jsx            # 헤더 컴포넌트
+│   └── common/
+│       ├── Button.jsx            # 공통 버튼
+│       └── Card.jsx              # 공통 카드
+├── pages/
+│   ├── LoginPage.jsx             # 로그인 페이지
+│   ├── DashboardPage.jsx         # 대시보드
+│   └── OAuthCallbackPage.jsx    # OAuth 콜백 처리
+└── App.jsx                       # 라우팅 설정
+```
+
+## 환경 설정
+
+`.env` 파일을 생성하고 다음 내용을 추가하세요:
+
+```bash
+# Backend API URL
+VITE_API_BASE_URL=http://localhost:9090/api
+
+# Keycloak OAuth Configuration
+VITE_KEYCLOAK_URL=http://localhost:8180
+VITE_KEYCLOAK_REALM=devops
+VITE_KEYCLOAK_CLIENT_ID=devops-portal
+VITE_KEYCLOAK_REDIRECT_URI=http://localhost:5173/callback
+```
+
+## 실행 방법
+
+```bash
+# 개발 서버 실행
+npm run dev
+
+# 빌드
+npm run build
+
+# 빌드 결과물 미리보기
+npm run preview
+```
+
+## 주요 기능
+
+### 인증
+- Keycloak OAuth 2.0 기반 인증
+- JWT 토큰 관리
+- 라우트 보호 (PrivateRoute, PublicRoute)
+
+### 라우팅
+- `/login` - 로그인 페이지
+- `/callback` - OAuth 콜백 처리
+- `/dashboard` - 대시보드 (인증 필요)
+
+## 개발 서버
+
+- URL: `http://localhost:5173`
+- HMR (Hot Module Replacement) 지원
