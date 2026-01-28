@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 import OAuthCallbackPage from './pages/OAuthCallbackPage';
 import Header from './components/layout/Header';
 
@@ -68,6 +69,16 @@ function App() {
               <PrivateRoute>
                 <Layout>
                   <DashboardPage />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/projects/:projectId"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <ProjectDetailPage />
                 </Layout>
               </PrivateRoute>
             }

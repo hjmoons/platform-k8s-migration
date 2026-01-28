@@ -12,4 +12,16 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
+// 401 에러 시 로그아웃 처리
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('jwt');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default instance;
