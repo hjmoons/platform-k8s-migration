@@ -2,15 +2,13 @@ name: Frontend CI with Node.js
 
 on:
   push:
-    branches: [ "feature/cicd-kustomize" ]
+    branches: [ "main" ]
     paths:
       - 'portal/frontend/**'
-      - '.github/workflows/portal-frontend-build.yaml'
   pull_request:
-    branches: [ "feature/cicd-kustomize" ]
+    branches: [ "main" ]
     paths:
       - 'portal/frontend/**'
-      - '.github/workflows/portal-frontend-build.yaml'
 
 jobs:
   build:
