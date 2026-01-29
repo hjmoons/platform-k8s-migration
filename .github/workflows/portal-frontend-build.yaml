@@ -17,7 +17,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -68,3 +68,16 @@ jobs:
         platforms: |
           linux/amd64
           linux/arm64
+
+    - name: Update kustomize image tag
+      run: |
+        cd portal/k8s/overlays/dev
+        kustomize edit set image ghcr.io/hjmoons/devops-portal-frontend=ghcr.io/${{ github.repository_owner }}/devops-portal-frontend:${{ steps.tag.outputs.tag }}
+
+    - name: Commit and push
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git add portal/k8s/overlays/dev/kustomization.yaml
+        git commit -m "Update portal-frontend image to ${{ steps.tag.outputs.tag }}"
+        git push
