@@ -9,12 +9,12 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "feature/cicd-action" ]
+    branches: [ "main" ]
     paths:
       - 'portal/backend/**'
       - '.github/workflows/portal-backend-build.yaml'
   pull_request:
-    branches: [ "feature/cicd-action" ]
+    branches: [ "main" ]
     paths:
       - 'portal/backend/**'
       - '.github/workflows/portal-backend-build.yaml'
