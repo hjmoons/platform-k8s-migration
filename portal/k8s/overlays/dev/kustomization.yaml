@@ -11,4 +11,4 @@ images:
   newTag: 20260129-218dec9
 - name: ghcr.io/hjmoons/devops-portal-frontend
   newName: ghcr.io/hjmoons/devops-portal-frontend
-  newTag: 20260129-eb4d754
+  newTag: 20260129-2aa0540
