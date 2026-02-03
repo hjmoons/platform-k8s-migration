@@ -8,14 +8,14 @@ DevOps 플랫폼 포털 - Keycloak OAuth 인증 기반의 프로젝트/GitHub/Je
 
 ## 기술 스택
 
-### Frontend (portal/frontend)
+### Frontend (frontend)
 - React 19.1.0 + Vite 6.3.5
 - Tailwind CSS 4.1.7
 - React Router DOM 7.6.0
 - Axios (HTTP 클라이언트)
 - jwt-decode (JWT 토큰 디코딩)
 
-### Backend (portal/backend)
+### Backend (backend)
 - Spring Boot 3.x
 - Java 17+
 - Spring Security (OAuth2 Resource Server)
@@ -31,7 +31,7 @@ DevOps 플랫폼 포털 - Keycloak OAuth 인증 기반의 프로젝트/GitHub/Je
 ## 프론트엔드 구조
 
 ```
-portal/frontend/src/
+frontend/src/
 ├── App.jsx                 # 라우팅 및 레이아웃 설정
 ├── main.jsx               # React 진입점
 ├── index.css              # Tailwind CSS 설정
@@ -67,7 +67,7 @@ portal/frontend/src/
 ## 백엔드 구조
 
 ```
-portal/backend/src/main/java/io/hjmoons/devops/
+backend/src/main/java/io/hjmoons/devops/
 ├── DevopsApplication.java
 ├── config/
 │   ├── SecurityConfig.java    # Spring Security 설정
@@ -148,12 +148,12 @@ VITE_JENKINS_URL=http://localhost:8080
 
 ```bash
 # Frontend
-cd portal/frontend
+cd frontend
 npm install
 npm run dev  # http://localhost:5173
 
 # Backend
-cd portal/backend
+cd backend
 ./gradlew bootRun  # http://localhost:8090
 ```
 
@@ -161,10 +161,10 @@ cd portal/backend
 
 ```bash
 # Frontend 빌드
-cd portal/frontend
+cd frontend
 npm run build
 
 # Backend 빌드
-cd portal/backend
+cd backend
 ./gradlew build
 ```
