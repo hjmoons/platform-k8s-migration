@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-backend
+  labels:
+    app: portal-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal-backend
+  template:
+    metadata:
+      labels:
+        app: portal-backend
+    spec:
+      containers:
+        - name: portal-backend
+          image: ghcr.io/hjmoons/devops-portal-backend:latest
+          ports:
+            - containerPort: 8090
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

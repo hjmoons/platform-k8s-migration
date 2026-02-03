@@ -39,7 +39,10 @@ platform-k8s-migration/
 │   │       ├── contexts/     # React Context (인증)
 │   │       ├── pages/        # 페이지 컴포넌트
 │   │       └── services/     # API 서비스
-│   └── k8s/              # Kubernetes 매니페스트
+│   └── k8s/              # Kubernetes 매니페스트 (Kustomize)
+│       ├── base/         # 공통 리소스
+│       └── overlays/     # 환경별 설정 (dev, prod)
+├── .github/workflows/    # GitHub Actions CI/CD
 ├── CLAUDE.md             # Claude Code 참고 문서
 └── README.md
 ```
@@ -116,6 +119,64 @@ npm run build
 cd portal/backend
 ./gradlew build
 ```
+
+## Kubernetes 배포 (Kustomize)
+
+### 구조
+
+```
+portal/k8s/
+├── base/                        # 공통 리소스
+│   ├── kustomization.yaml
+│   ├── backend-deployment.yaml
+│   ├── backend-service.yaml
+│   ├── frontend-deployment.yaml
+│   └── frontend-service.yaml
+└── overlays/
+    ├── dev/                     # 개발 환경
+    │   └── kustomization.yaml
+    └── prod/                    # 운영 환경
+        └── kustomization.yaml
+```
+
+### 배포 명령어
+
+```bash
+# 매니페스트 미리보기
+kustomize build portal/k8s/overlays/dev
+
+# 개발 환경 배포
+kubectl apply -k portal/k8s/overlays/dev
+
+# 운영 환경 배포
+kubectl apply -k portal/k8s/overlays/prod
+```
+
+### 이미지 태그 변경
+
+```bash
+cd portal/k8s/overlays/dev
+kustomize edit set image ghcr.io/hjmoons/devops-portal-backend:새태그
+kustomize edit set image ghcr.io/hjmoons/devops-portal-frontend:새태그
+```
+
+## CI/CD (GitHub Actions)
+
+### 워크플로우
+
+| 파일 | 트리거 | 동작 |
+|------|--------|------|
+| `portal-backend-build.yaml` | `portal/backend/**` 변경 시 | Gradle 빌드 → Docker 이미지 푸시 → Kustomize 태그 업데이트 |
+| `portal-frontend-build.yaml` | `portal/frontend/**` 변경 시 | npm 빌드 → Docker 이미지 푸시 → Kustomize 태그 업데이트 |
+
+### 이미지 저장소
+
+- `ghcr.io/{owner}/devops-portal-backend`
+- `ghcr.io/{owner}/devops-portal-frontend`
+
+### 태그 형식
+
+`YYYYMMDD-{short_sha}` (예: `20260129-218dec9`)
 
 ## API 문서
 
