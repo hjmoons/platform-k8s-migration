@@ -48,6 +48,4 @@ spec:
           - start-dev
           - '--cache=ispn'
           - '--cache-stack=kubernetes'
-          - '--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true'
           - '-Djgroups.dns.query=keycloak.$(POD_NAMESPACE).svc.cluster.local'
-          - '--hostname-strict-https=false'
