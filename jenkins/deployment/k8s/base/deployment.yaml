@@ -24,3 +24,10 @@ spec:
             containerPort: 50000
             protocol: TCP
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"
