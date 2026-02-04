@@ -36,7 +36,14 @@ spec:
           - name: jgroups
             containerPort: 7600
             protocol: TCP
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
         args:
           - start-dev
           - '--cache=ispn'
