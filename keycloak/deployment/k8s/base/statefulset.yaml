@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  serviceName: keycloak
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: 'quay.io/keycloak/keycloak:latest'
+        env:
+        - name: CACHE_OWNERS_COUNT
+          value: '1'
+        - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
+          value: '1'
+        - name: KEYCLOAK_ADMIN
+          value: admin
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: admin
+        - name: KC_HOSTNAME_URL
+          value: 'https://keycloak.devops.com/'
+        - name: KC_HOSTNAME_ADMIN_URL
+          value: 'https://keycloak.devops.com/'
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          - name: jgroups
+            containerPort: 7600
+            protocol: TCP
+        imagePullPolicy: Always
+        args:
+          - start
+          - '--cache=ispn'
+          - '--cache-stack=kubernetes'
+          - '--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true'
+          - '-Djgroups.dns.query=keycloak.$(POD_NAMESPACE).svc.cluster.local'
