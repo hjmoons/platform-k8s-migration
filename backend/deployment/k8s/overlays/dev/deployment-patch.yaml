@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-backend
+spec:
+  template:
+    spec:
+      containers:
+        - name: portal-backend
+          envFrom:
+            - configMapRef:
+                name: portal-backend-config
+            - secretRef:
+                name: portal-backend-secret

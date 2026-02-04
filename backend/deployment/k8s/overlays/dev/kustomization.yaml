@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - ../../base
+- configmap.yaml
 
 namespace: devops-dev
 
@@ -10,3 +11,6 @@ images:
 - name: ghcr.io/hjmoons/devops-portal-backend
   newName: ghcr.io/hjmoons/devops-portal-backend
   newTag: 20260204-3fd7615
+
+patches:
+- path: deployment-patch.yaml

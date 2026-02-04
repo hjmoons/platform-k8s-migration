@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portal-backend-config
+data:
+  KEYCLOAK_CLIENT_ID: "portal"
+  KEYCLOAK_REALM_URL: "http://keycloak.devops.com/realms/devops"
+  JENKINS_URL: "http://jenkins.devops.com"
+  JENKINS_USERNAME: "admin"
+  FRONTEND_REDIRECT_URI: "http://portal.devops.com/callback"
