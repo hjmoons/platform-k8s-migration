@@ -29,6 +29,8 @@ spec:
           value: 'http://keycloak.devops.com/'
         - name: KC_HOSTNAME_ADMIN_URL
           value: 'http://keycloak.devops.com/'
+        - name: JAVA_OPTS
+          value: '-Xms256m -Xmx512m'
         ports:
           - name: http
             containerPort: 8080
