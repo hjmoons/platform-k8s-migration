@@ -9,4 +9,4 @@ namespace: devops-dev
 images:
 - name: ghcr.io/hjmoons/devops-portal-backend
   newName: ghcr.io/hjmoons/devops-portal-backend
-  newTag: 20260204-2f9c4c8
+  newTag: 20260204-3fd7615
