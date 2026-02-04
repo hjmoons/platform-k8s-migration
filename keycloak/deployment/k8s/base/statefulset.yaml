@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: keycloak
-        image: 'keycloak/keycloak:latest'
+        image: 'quay.io/keycloak/keycloak:latest'
         env:
         - name: CACHE_OWNERS_COUNT
           value: '1'
@@ -25,38 +25,13 @@ spec:
           value: admin
         - name: KEYCLOAK_ADMIN_PASSWORD
           value: admin
-        - name: KC_PROXY
-          value: edge
-        - name: PROXY_ADDRESS_FORWARDING
-          value: 'true'
-        - name: KC_HEALTH_ENABLED
-          value: 'true'
-        - name: KC_METRICS_ENABLED
-          value: 'true'
-        - name: KC_HTTP_ENABLED
-          value: 'true'
-        - name: KC_HTTP_RELATIVE_PATH
-          value: /auth
         - name: KC_HOSTNAME_URL
-          value: 'https://keycloak.com/auth/'
+          value: 'https://keycloak.devops.com/'
         - name: KC_HOSTNAME_ADMIN_URL
-          value: 'https://keycloak.com/auth/'
-        - name: KC_DB
-          value: postgres
-        - name: KC_DB_URL
-          value: 'jdbc:postgresql://localhost:5432/keycloak'
-        - name: KC_DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: db-info
-              key: keycloak_username
-        - name: KC_DB_PASSWORD
-          secretKeyRef:
-              name: db-info
-              key: keycloak_password
+          value: 'https://keycloak.devops.com/'
         ports:
           - name: http
-            containerPort: 8180
+            containerPort: 8080
             protocol: TCP
           - name: jgroups
             containerPort: 7600
@@ -67,4 +42,4 @@ spec:
           - '--cache=ispn'
           - '--cache-stack=kubernetes'
           - '--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true'
-          - '-Djgroups.dns.query=keycloak.default.svc.cluster.local'
+          - '-Djgroups.dns.query=keycloak.$(POD_NAMESPACE).svc.cluster.local'

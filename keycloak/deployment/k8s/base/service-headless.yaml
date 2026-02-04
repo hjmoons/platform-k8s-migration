@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: keycloak
 spec:
-  tpye: ClusterIP
+  type: ClusterIP
   clusterIP: None
   selector:
     app: keycloak
   ports:
     - protocol: TCP
-      port: 8180
-      targetPort: 8180
+      port: 8080
+      targetPort: 8080
