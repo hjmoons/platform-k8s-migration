@@ -47,3 +47,15 @@ spec:
           - '--cache=ispn'
           - '--cache-stack=kubernetes'
           - '-Djgroups.dns.query=keycloak.$(POD_NAMESPACE).svc.cluster.local'
+        volumeMounts:
+          - name: keycloak-data
+            mountPath: /opt/keycloak/data
+  volumeClaimTemplates:
+    - metadata:
+        name: keycloak-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
