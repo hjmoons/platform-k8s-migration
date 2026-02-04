@@ -26,9 +26,9 @@ spec:
         - name: KEYCLOAK_ADMIN_PASSWORD
           value: admin
         - name: KC_HOSTNAME_URL
-          value: 'https://keycloak.devops.com/'
+          value: 'http://keycloak.devops.com/'
         - name: KC_HOSTNAME_ADMIN_URL
-          value: 'https://keycloak.devops.com/'
+          value: 'http://keycloak.devops.com/'
         ports:
           - name: http
             containerPort: 8080
@@ -38,8 +38,9 @@ spec:
             protocol: TCP
         imagePullPolicy: Always
         args:
-          - start
+          - start-dev
           - '--cache=ispn'
           - '--cache-stack=kubernetes'
           - '--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true'
           - '-Djgroups.dns.query=keycloak.$(POD_NAMESPACE).svc.cluster.local'
+          - '--hostname-strict-https=false'
