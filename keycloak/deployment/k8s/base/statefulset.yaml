@@ -37,10 +37,6 @@ spec:
             containerPort: 7600
             protocol: TCP
         imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
         args:
           - start-dev
           - '--cache=ispn'
