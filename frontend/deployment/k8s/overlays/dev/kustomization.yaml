@@ -9,4 +9,4 @@ namespace: devops-dev
 images:
 - name: ghcr.io/hjmoons/devops-portal-frontend
   newName: ghcr.io/hjmoons/devops-portal-frontend
-  newTag: 20260203-459b972
+  newTag: 20260204-3fd7615
