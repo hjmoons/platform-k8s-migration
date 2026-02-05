@@ -1,6 +1,7 @@
 name: Frontend CI with Node.js
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
