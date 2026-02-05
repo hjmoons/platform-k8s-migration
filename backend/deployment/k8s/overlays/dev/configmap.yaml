@@ -5,6 +5,7 @@ metadata:
 data:
   KEYCLOAK_CLIENT_ID: "portal"
   KEYCLOAK_REALM_URL: "http://keycloak:8080/realms/devops"
+  KEYCLOAK_EXTERNAL_URL: "http://keycloak.devops.com/realms/devops"
   JENKINS_URL: "http://jenkins:8080"
   JENKINS_USERNAME: "admin"
   FRONTEND_REDIRECT_URI: "http://portal.devops.com/callback"

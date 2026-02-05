@@ -38,7 +38,8 @@ spring:
             jwk-set-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}/protocol/openid-connect/certs
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}
+          issuer-uri: ${KEYCLOAK_EXTERNAL_URL:http://localhost:8180/realms/devops}
+          jwk-set-uri: ${KEYCLOAK_REALM_URL:http://localhost:8180/realms/devops}/protocol/openid-connect/certs
 
 springdoc:
   swagger-ui:
