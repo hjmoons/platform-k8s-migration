@@ -8,3 +8,4 @@ data:
   JENKINS_URL: "http://jenkins:8080"
   JENKINS_USERNAME: "admin"
   FRONTEND_REDIRECT_URI: "http://portal.devops.com/callback"
+  CORS_ALLOWED_ORIGINS: "http://portal.devops.com,http://portal-api.devops.com,http://keycloak.devops.com"
