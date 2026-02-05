@@ -6,10 +6,12 @@ on:
     branches: [ "main" ]
     paths:
       - 'frontend/**'
+      - '!frontend/deployment/**'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'frontend/**'
+      - '!frontend/deployment/**'
 
 jobs:
   build:

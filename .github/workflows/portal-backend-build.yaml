@@ -13,10 +13,12 @@ on:
     branches: [ "main" ]
     paths:
       - 'backend/**'
+      - '!backend/deployment/**'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'backend/**'
+      - '!backend/deployment/**'
 
 jobs:
   build:
