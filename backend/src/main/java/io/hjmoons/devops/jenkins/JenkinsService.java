@@ -42,8 +42,8 @@ public class JenkinsService {
 
     @Transactional(readOnly = true)
     public JenkinsFolderResponse getFolderByProjectId(Long projectId) {
-        JenkinsFolder folder = jenkinsRepository.findByProjectId(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트의 Jenkins 폴더를 찾을 수 없습니다."));
-        return JenkinsFolderResponse.from(folder);
+        return jenkinsRepository.findByProjectId(projectId)
+                .map(JenkinsFolderResponse::from)
+                .orElse(null);
     }
 }
