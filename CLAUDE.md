@@ -26,7 +26,64 @@ DevOps 플랫폼 포털 - Keycloak OAuth 인증 기반의 프로젝트/GitHub/Je
 - Keycloak (OAuth 2.0 인증)
 - Jenkins (CI/CD)
 - GitHub API 연동
-- Docker / Kubernetes
+- Docker / Kubernetes (Kustomize)
+- GitHub Actions (CI/CD 파이프라인)
+
+## Kubernetes 배포 구조
+
+```
+├── keycloak/deployment/k8s/
+│   ├── base/
+│   │   ├── statefulset.yaml
+│   │   ├── service-headless.yaml
+│   │   ├── ingress.yaml
+│   │   └── kustomization.yaml
+│   └── overlays/dev/
+│       └── kustomization.yaml
+├── jenkins/deployment/k8s/
+│   ├── base/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   ├── ingress.yaml
+│   │   ├── rbac.yaml
+│   │   └── kustomization.yaml
+│   └── overlays/dev/
+│       └── kustomization.yaml
+├── backend/deployment/k8s/
+│   ├── base/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   ├── ingress.yaml
+│   │   └── kustomization.yaml
+│   └── overlays/dev/
+│       ├── configmap.yaml
+│       └── kustomization.yaml
+└── frontend/deployment/k8s/
+    ├── base/
+    │   ├── deployment.yaml
+    │   ├── service.yaml
+    │   ├── ingress.yaml
+    │   └── kustomization.yaml
+    └── overlays/dev/
+        └── kustomization.yaml
+```
+
+## K8s 환경변수 (Backend ConfigMap)
+
+```yaml
+KEYCLOAK_CLIENT_ID: "portal"
+KEYCLOAK_REALM_URL: "http://keycloak:8080/realms/devops"        # 내부 URL (서버 간 통신)
+KEYCLOAK_EXTERNAL_URL: "http://keycloak.devops.com/realms/devops" # 외부 URL (JWT issuer 매칭)
+JENKINS_URL: "http://jenkins:8080"                               # 내부 URL
+FRONTEND_REDIRECT_URI: "http://portal.devops.com/callback"
+CORS_ALLOWED_ORIGINS: "http://portal.devops.com,http://portal-api.devops.com,http://keycloak.devops.com"
+```
+
+### JWT issuer 내부/외부 URL 분리
+
+- `KEYCLOAK_REALM_URL`: Pod 내부에서 Keycloak 접근 (jwk-set-uri)
+- `KEYCLOAK_EXTERNAL_URL`: JWT의 iss 클레임과 매칭 (issuer-uri)
+- Keycloak은 KC_HOSTNAME_URL 기반으로 토큰 issuer를 설정하므로 분리 필요
 
 ## 프론트엔드 구조
 
@@ -168,3 +225,42 @@ npm run build
 cd backend
 ./gradlew build
 ```
+
+## Kubernetes 배포
+
+```bash
+# 전체 배포 (dev 환경)
+kubectl apply -k keycloak/deployment/k8s/overlays/dev
+kubectl apply -k jenkins/deployment/k8s/overlays/dev
+kubectl apply -k backend/deployment/k8s/overlays/dev
+kubectl apply -k frontend/deployment/k8s/overlays/dev
+
+# 개별 재시작
+kubectl rollout restart deployment portal-backend -n devops-dev
+kubectl rollout restart deployment portal-frontend -n devops-dev
+```
+
+## GitHub Actions CI/CD
+
+### 트리거 조건
+
+- `workflow_dispatch`: 수동 실행
+- `push`: main 브랜치에 소스 변경 시 (deployment/ 제외)
+- `pull_request`: main 브랜치 대상 PR
+
+### 파이프라인 흐름
+
+1. 소스 빌드 (Gradle/npm)
+2. Docker 이미지 빌드 (multi-arch: amd64, arm64)
+3. GHCR에 이미지 푸시
+4. kustomize 이미지 태그 업데이트
+5. 변경사항 커밋/푸시
+
+## Ingress 도메인 (dev)
+
+| 서비스 | 도메인 |
+| ------ | ------ |
+| Frontend | portal.devops.com |
+| Backend API | portal-api.devops.com/api |
+| Keycloak | keycloak.devops.com |
+| Jenkins | jenkins.devops.com |
