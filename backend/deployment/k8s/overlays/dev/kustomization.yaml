@@ -10,7 +10,7 @@ namespace: devops-dev
 images:
 - name: ghcr.io/hjmoons/devops-portal-backend
   newName: ghcr.io/hjmoons/devops-portal-backend
-  newTag: 20260206-7f7abae
+  newTag: 20260209-2036727
 
 patches:
 - path: deployment-patch.yaml
